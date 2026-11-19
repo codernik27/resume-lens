@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumeLens — Developer ATS & Skill Gap Auditor</title>
+  <title>ResumeLens — Enterprise ATS Diagnostic & Skill Gap Engine</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
@@ -16,20 +16,17 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            brand: {
-              50: '#f0fdf4',
-              500: '#22c55e',
-              600: '#16a34a',
-            },
-            surface: {
-              base: '#0d1117',
-              card: '#161b22',
-              border: '#30363d',
-              muted: '#8b949e',
+            obsidian: {
+              950: '#060709',
+              900: '#0b0d13',
+              850: '#10131c',
+              800: '#161a26',
+              700: '#22283a',
+              border: 'rgba(255, 255, 255, 0.07)',
             }
           }
         }
@@ -38,264 +35,379 @@
   </script>
 
   <style>
-    body { background-color: #0d1117; color: #c9d1d9; }
-    .gauge-circle {
-      transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.4s ease;
+    /* Engineering Dot-Grid Canvas */
+    body {
+      background-color: #060709;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      color: #e2e8f0;
+    }
+    /* Vercel / Linear-style Crisp Glass Borders */
+    .pro-card {
+      background: rgba(14, 18, 27, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+    }
+    .pro-card-hover {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pro-card-hover:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
+    }
+    /* Radial SVG Progress Gauge */
+    .gauge-ring {
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.4s ease;
       transform: rotate(-90deg);
       transform-origin: 50% 50%;
     }
+    /* Custom Scrollbars */
+    textarea::-webkit-scrollbar { width: 6px; }
+    textarea::-webkit-scrollbar-track { background: transparent; }
+    textarea::-webkit-scrollbar-thumb { background: #22283a; border-radius: 4px; }
+    textarea::-webkit-scrollbar-thumb:hover { background: #333c56; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans antialiased">
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-300">
 
-  <!-- Clean Developer Navigation -->
-  <header class="border-b border-surface-border bg-surface-card/80 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+  <!-- Sleek Top Bar -->
+  <header class="border-b border-obsidian-border bg-obsidian-950/80 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       
-      <!-- Custom Brand Logo -->
-      <div class="flex items-center gap-3">
-        <svg class="w-8 h-8 text-emerald-400" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="8" fill="#1f2937"/>
-          <path d="M10 12H26M10 18H20M10 24H17" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="23" cy="21" r="5" stroke="#10b981" stroke-width="2.5" fill="#111827"/>
-          <path d="M27 25L30 28" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-        <span class="text-base font-bold text-white tracking-tight">Resume<span class="text-emerald-400">Lens</span></span>
-        <span class="text-[11px] font-mono text-surface-muted bg-surface-border/50 px-2 py-0.5 rounded border border-surface-border">v2.1</span>
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-obsidian-950 shadow-[0_0_20px_rgba(16,185,129,0.35)]">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <circle cx="11.5" cy="14.5" r="2.5"></circle>
+            <path d="M13.5 16.5 16 19"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-extrabold text-white tracking-tight">Resume<span class="text-emerald-400">Lens</span></span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> v2.5 PRO
+            </span>
+          </div>
+        </div>
       </div>
 
+      <!-- Links -->
       <div class="flex items-center gap-3">
-        <a href="https://github.com/codernik27/resume-lens" target="_blank" class="text-xs font-medium text-slate-300 hover:text-white bg-surface-border/40 hover:bg-surface-border px-3 py-1.5 rounded-md border border-surface-border transition flex items-center gap-2">
-          <i class="fa-brands fa-github text-sm"></i> Star on GitHub
+        <a href="https://github.com/codernik27/resume-lens" target="_blank" class="text-xs font-semibold text-slate-300 hover:text-white bg-obsidian-850 hover:bg-obsidian-800 px-3.5 py-1.5 rounded-lg border border-obsidian-border transition flex items-center gap-2">
+          <i class="fa-brands fa-github text-sm"></i> Star Repository
         </a>
       </div>
     </div>
   </header>
 
-  <!-- Workspace -->
-  <main class="flex-1 max-w-6xl mx-auto px-6 py-10 w-full">
+  <!-- Main Canvas -->
+  <main class="flex-1 max-w-7xl mx-auto px-6 py-12 w-full">
     
-    <!-- Title & Purpose -->
-    <div class="mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">ATS Resume & Skill-Gap Diagnostic</h1>
-      <p class="text-sm text-surface-muted max-w-2xl">
-        A deterministic client-side tool to analyze keyword match density, tech taxonomy coverage, and structural ATS compliance before applying.
-      </p>
+    <!-- Hero / Control Deck -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+      <div>
+        <div class="text-[11px] font-mono uppercase tracking-widest text-emerald-400 font-semibold mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-microchip"></i> Static Skill-Tokenization Engine
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Applicant Tracking System <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Auditor</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+          Instantly benchmarks your resume against target technical requirements. Pinpoints exact missing keywords and computes structural compliance.
+        </p>
+      </div>
 
-      <!-- Presets -->
-      <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
-        <span class="text-surface-muted font-mono font-medium">Load Sample Role:</span>
-        <button id="btnSwe" class="px-2.5 py-1 rounded bg-surface-card border border-surface-border hover:border-slate-500 text-slate-200 transition">Software Engineer</button>
-        <button id="btnAi" class="px-2.5 py-1 rounded bg-surface-card border border-surface-border hover:border-slate-500 text-slate-200 transition">Python & AI Engineer</button>
-        <button id="btnWeb" class="px-2.5 py-1 rounded bg-surface-card border border-surface-border hover:border-slate-500 text-slate-200 transition">Frontend / React</button>
+      <!-- Presets & Shortcut Hint -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <span class="text-[11px] font-mono text-slate-500">1-CLICK SAMPLE:</span>
+        <div class="inline-flex rounded-lg border border-obsidian-border bg-obsidian-900 p-1 gap-1 text-xs">
+          <button id="btnSwe" class="px-3 py-1 rounded-md text-slate-300 hover:text-white hover:bg-obsidian-800 transition font-medium">Software Engineer</button>
+          <button id="btnAi" class="px-3 py-1 rounded-md text-slate-300 hover:text-white hover:bg-obsidian-800 transition font-medium">AI / Data</button>
+          <button id="btnWeb" class="px-3 py-1 rounded-md text-slate-300 hover:text-white hover:bg-obsidian-800 transition font-medium">React / Web</button>
+        </div>
       </div>
     </div>
 
-    <!-- Dual Inputs -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <!-- Inputs Deck -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       
-      <!-- Resume Box -->
-      <div class="bg-surface-card border border-surface-border rounded-xl p-5 flex flex-col">
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-xs font-semibold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-regular fa-file-code text-emerald-400"></i> Resume Content
-          </label>
-          <button id="btnClearResume" class="text-[11px] text-surface-muted hover:text-slate-300">Clear</button>
+      <!-- Resume Deck -->
+      <div class="pro-card rounded-2xl p-5 flex flex-col pro-card-hover">
+        <div class="flex items-center justify-between mb-3 pb-3 border-b border-obsidian-border">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-md bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">01</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Candidate Resume</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="resumeCounter" class="text-[10px] font-mono text-slate-500">0 words</span>
+            <button id="btnClearResume" class="text-[11px] text-slate-500 hover:text-slate-300 transition">Clear</button>
+          </div>
         </div>
-        <textarea id="resumeInput" rows="12" placeholder="Paste your plain-text resume here..." class="w-full flex-1 bg-surface-base border border-surface-border rounded-lg p-3.5 text-xs font-mono text-slate-200 placeholder-surface-muted/60 focus:outline-none focus:border-emerald-500 transition resize-none"></textarea>
+        <textarea id="resumeInput" rows="13" placeholder="Paste your resume plain text here..." class="w-full flex-1 bg-obsidian-950/70 border border-obsidian-border rounded-xl p-4 text-xs font-mono text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/50 transition resize-none"></textarea>
       </div>
 
-      <!-- Job Description Box -->
-      <div class="bg-surface-card border border-surface-border rounded-xl p-5 flex flex-col">
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-xs font-semibold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-solid fa-crosshairs text-sky-400"></i> Target Job Requirements
-          </label>
-          <button id="btnClearJd" class="text-[11px] text-surface-muted hover:text-slate-300">Clear</button>
+      <!-- Job Description Deck -->
+      <div class="pro-card rounded-2xl p-5 flex flex-col pro-card-hover">
+        <div class="flex items-center justify-between mb-3 pb-3 border-b border-obsidian-border">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-md bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xs font-mono font-bold">02</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Target Job Posting</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="jdCounter" class="text-[10px] font-mono text-slate-500">0 words</span>
+            <button id="btnClearJd" class="text-[11px] text-slate-500 hover:text-slate-300 transition">Clear</button>
+          </div>
         </div>
-        <textarea id="jdInput" rows="12" placeholder="Paste the target job description requirements here..." class="w-full flex-1 bg-surface-base border border-surface-border rounded-lg p-3.5 text-xs font-mono text-slate-200 placeholder-surface-muted/60 focus:outline-none focus:border-sky-500 transition resize-none"></textarea>
+        <textarea id="jdInput" rows="13" placeholder="Paste target job qualifications and duties here..." class="w-full flex-1 bg-obsidian-950/70 border border-obsidian-border rounded-xl p-4 text-xs font-mono text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500/50 transition resize-none"></textarea>
       </div>
+
     </div>
 
-    <!-- Execute Button -->
-    <div class="flex items-center justify-center mb-10">
-      <button id="btnAnalyze" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg shadow-sm transition flex items-center gap-2">
-        <i class="fa-solid fa-play text-xs"></i> Run Diagnostic
+    <!-- Central Action Bar -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+      <button id="btnAnalyze" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-obsidian-950 font-extrabold text-sm rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.3)] transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 tracking-wide">
+        <i class="fa-solid fa-bolt-lightning text-xs"></i> Execute ATS Diagnostic
       </button>
+      <span class="text-[11px] font-mono text-slate-500 hidden sm:inline">or press <kbd class="px-1.5 py-0.5 rounded bg-obsidian-850 border border-obsidian-border text-slate-300 font-mono text-[10px]">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 rounded bg-obsidian-850 border border-obsidian-border text-slate-300 font-mono text-[10px]">Enter</kbd></span>
     </div>
 
-    <!-- Results Dashboard (Hidden until execution) -->
-    <div id="resultsDeck" class="hidden space-y-6">
+    <!-- Diagnostic Results Deck -->
+    <div id="resultsDeck" class="hidden space-y-8">
       
-      <!-- Primary Metrics Card -->
-      <div class="bg-surface-card border border-surface-border rounded-xl p-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+      <!-- Top Diagnostic Board -->
+      <div class="pro-card rounded-2xl p-6 sm:p-8 border-emerald-500/20">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-obsidian-border">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2.5">
+              <span>Diagnostic Assessment</span>
+              <span id="matchVerdictPill" class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-bold">Analyzing</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Multi-vector analysis: Keyword matching, taxonomy density, and structural compliance</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnExportReport" class="px-3.5 py-2 rounded-lg bg-obsidian-850 hover:bg-obsidian-800 border border-obsidian-border text-xs font-semibold text-slate-200 transition flex items-center gap-2">
+              <i class="fa-solid fa-download text-emerald-400"></i> Export Report (.md)
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mt-6">
           
-          <!-- Animated Gauge -->
-          <div class="flex flex-col items-center justify-center text-center md:border-r border-surface-border pr-0 md:pr-6">
-            <div class="relative w-32 h-32">
+          <!-- Radial Progress Gauge -->
+          <div class="md:col-span-4 flex flex-col items-center justify-center text-center sm:border-r border-obsidian-border pr-0 sm:pr-6">
+            <div class="relative w-36 h-36">
               <svg class="w-full h-full" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#21262d" stroke-width="8"/>
-                <circle id="progressCircle" class="gauge-circle" cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="8" stroke-dasharray="251.32" stroke-dashoffset="251.32"/>
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#161a26" stroke-width="8"/>
+                <circle id="progressCircle" class="gauge-ring" cx="50" cy="50" r="42" fill="none" stroke="#10b981" stroke-width="8" stroke-dasharray="263.89" stroke-dashoffset="263.89"/>
               </svg>
               <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span id="scoreText" class="text-3xl font-bold text-white font-mono">0%</span>
-                <span class="text-[10px] uppercase text-surface-muted tracking-wider font-semibold">Match Rate</span>
+                <span id="scoreText" class="text-4xl font-extrabold text-white font-mono tracking-tight">0%</span>
+                <span class="text-[9px] uppercase font-mono tracking-widest text-slate-500 font-bold mt-0.5">Match Score</span>
               </div>
             </div>
-            <div id="statusBadge" class="mt-3 text-xs font-medium px-2.5 py-0.5 rounded-full bg-surface-border text-slate-300">
-              Ready
-            </div>
+            <div id="statusSubtext" class="text-xs text-slate-400 mt-3 font-medium">Ready for scan</div>
           </div>
 
-          <!-- Structured Counters -->
-          <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="bg-surface-base border border-surface-border p-4 rounded-lg">
-              <div class="text-[11px] font-mono text-surface-muted uppercase">Matched Tech</div>
-              <div id="countMatched" class="text-2xl font-bold text-emerald-400 font-mono mt-1">0</div>
-              <p class="text-[11px] text-surface-muted mt-1">Found in both resume & JD</p>
+          <!-- Structured Metrics Grid -->
+          <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-obsidian-950/60 border border-obsidian-border p-4 rounded-xl">
+              <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Matched Skills</div>
+              <div id="metricMatched" class="text-2xl font-bold text-emerald-400 font-mono mt-1">0</div>
+              <div class="text-[11px] text-slate-500 mt-1">Aligned with job requirements</div>
             </div>
-            <div class="bg-surface-base border border-surface-border p-4 rounded-lg">
-              <div class="text-[11px] font-mono text-surface-muted uppercase">Missing Tech</div>
-              <div id="countMissing" class="text-2xl font-bold text-rose-400 font-mono mt-1">0</div>
-              <p class="text-[11px] text-surface-muted mt-1">Required by JD, not in resume</p>
+            <div class="bg-obsidian-950/60 border border-obsidian-border p-4 rounded-xl">
+              <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Missing Skills</div>
+              <div id="metricMissing" class="text-2xl font-bold text-rose-400 font-mono mt-1">0</div>
+              <div class="text-[11px] text-slate-500 mt-1">Gaps in qualification</div>
             </div>
-            <div class="bg-surface-base border border-surface-border p-4 rounded-lg">
-              <div class="text-[11px] font-mono text-surface-muted uppercase">Structure Audit</div>
-              <div id="structScore" class="text-2xl font-bold text-sky-400 font-mono mt-1">4/4</div>
-              <p class="text-[11px] text-surface-muted mt-1">Standard ATS sections found</p>
+            <div class="bg-obsidian-950/60 border border-obsidian-border p-4 rounded-xl">
+              <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Structure Score</div>
+              <div id="metricStructure" class="text-2xl font-bold text-cyan-400 font-mono mt-1">0/4</div>
+              <div class="text-[11px] text-slate-500 mt-1">Standard ATS sections found</div>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- Skill Breakdown -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Categorized Skill Breakdown -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        <!-- Missing Skills Card -->
-        <div class="bg-surface-card border border-surface-border rounded-xl p-5">
-          <div class="flex items-center justify-between mb-4 pb-2 border-b border-surface-border">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-2">
-              <i class="fa-solid fa-triangle-exclamation"></i> Missing Keywords to Add
-            </h3>
-            <button id="btnCopyMissing" class="text-[11px] text-surface-muted hover:text-white transition flex items-center gap-1">
+        <!-- Missing Skills Deck -->
+        <div class="pro-card rounded-2xl p-6 border-rose-500/20">
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-obsidian-border">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">Missing Target Keywords</h3>
+            </div>
+            <button id="btnCopyMissing" class="text-xs font-mono text-slate-400 hover:text-white transition flex items-center gap-1.5">
               <i class="fa-regular fa-copy"></i> Copy List
             </button>
           </div>
-          <div id="missingChips" class="flex flex-wrap gap-1.5 min-h-[80px] items-start content-start"></div>
+          <p class="text-[11px] text-slate-400 mb-4">Incorporate these high-frequency keywords organically into your projects or work experience:</p>
+          <div id="missingChips" class="flex flex-wrap gap-2 min-h-[90px] items-start content-start"></div>
         </div>
 
-        <!-- Matched Skills Card -->
-        <div class="bg-surface-card border border-surface-border rounded-xl p-5">
-          <div class="flex items-center justify-between mb-4 pb-2 border-b border-surface-border">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
-              <i class="fa-solid fa-check"></i> Confirmed Skills
-            </h3>
-            <span class="text-[11px] text-surface-muted">Passing filters</span>
+        <!-- Matched Skills Deck -->
+        <div class="pro-card rounded-2xl p-6 border-emerald-500/20">
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-obsidian-border">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">Confirmed Matching Skills</h3>
+            </div>
+            <span class="text-xs font-mono text-emerald-400 font-semibold" id="coverageRate">100% Verified</span>
           </div>
-          <div id="matchedChips" class="flex flex-wrap gap-1.5 min-h-[80px] items-start content-start"></div>
+          <p class="text-[11px] text-slate-400 mb-4">These competencies are successfully detected by the ATS parser:</p>
+          <div id="matchedChips" class="flex flex-wrap gap-2 min-h-[90px] items-start content-start"></div>
         </div>
 
       </div>
 
-      <!-- ATS Formatting Checklist -->
-      <div class="bg-surface-card border border-surface-border rounded-xl p-5">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
-          <i class="fa-solid fa-list-check text-slate-400"></i> Structural ATS Check
+      <!-- Categorized Breakdown Table -->
+      <div class="pro-card rounded-2xl p-6">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-slate-400"></i> Taxonomy Distribution
         </h3>
-        <div id="structList" class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs"></div>
+        <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      </div>
+
+      <!-- Structural ATS Compliance Checklist -->
+      <div class="pro-card rounded-2xl p-6">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-slate-400"></i> Structural Compliance Checklist
+        </h3>
+        <div id="structGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
       </div>
 
     </div>
   </main>
 
-  <footer class="border-t border-surface-border py-6 text-center text-xs text-surface-muted">
-    Developed by <a href="https://github.com/codernik27" class="text-slate-300 hover:text-white font-medium">Nikhil Teja Palakurthi</a> • Client-Side Open Source Tool
+  <!-- Clean Minimalist Footer -->
+  <footer class="border-t border-obsidian-border py-8 text-center text-xs text-slate-500 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        Crafted with precision by <a href="https://github.com/codernik27" class="text-slate-300 hover:text-white font-semibold transition">Nikhil Teja Palakurthi</a>
+      </div>
+      <div class="font-mono text-[11px] text-slate-600">
+        Deterministic Client-Side Analysis • Zero Storage
+      </div>
+    </div>
   </footer>
 
   <script>
-    // 150+ Technical skills taxonomy
-    const SKILL_DB = [
-      "python", "javascript", "typescript", "c++", "c", "java", "c#", "go", "rust", "ruby", "php", "swift", "kotlin",
-      "html", "css", "tailwind", "sass", "bootstrap", "react", "next.js", "vue", "angular", "svelte",
-      "node.js", "express", "fastapi", "django", "flask", "spring", "spring boot", "asp.net",
-      "sql", "postgresql", "mysql", "sqlite", "mongodb", "redis", "dynamodb", "elasticsearch", "supabase", "firebase",
-      "git", "github", "gitlab", "docker", "kubernetes", "linux", "bash", "aws", "azure", "gcp", "terraform", "ci/cd",
-      "rest api", "graphql", "microservices", "unit testing", "system design", "data structures", "algorithms",
-      "machine learning", "deep learning", "pandas", "numpy", "scikit-learn", "tensorflow", "pytorch", "nlp", "agile", "scrum"
-    ];
+    // Comprehensive Categorized Technical Ontology
+    const TAXONOMY = {
+      languages: ["python", "javascript", "typescript", "c++", "c", "java", "c#", "go", "rust", "ruby", "php", "swift", "kotlin", "html", "css", "sql"],
+      frameworks: ["react", "next.js", "node.js", "express", "fastapi", "django", "flask", "spring", "vue", "angular", "tailwind"],
+      cloud_devops: ["docker", "kubernetes", "aws", "azure", "gcp", "git", "github", "linux", "ci/cd", "terraform", "bash"],
+      databases_data: ["postgresql", "mysql", "mongodb", "redis", "sqlite", "graphql", "rest api", "pandas", "numpy", "pytorch", "tensorflow", "data structures", "algorithms", "unit testing", "agile", "scrum"]
+    };
+
+    const ALL_SKILLS = Object.values(TAXONOMY).flat();
 
     const PRESETS = {
       swe: {
-        resume: `Nikhil Teja Palakurthi\nEmail: codernik90@gmail.com | Phone: +91 9876543210\nGitHub: github.com/codernik27 | LinkedIn: linkedin.com/in/nikhilteja\n\nEXPERIENCE & PROJECTS:\n- DevSentinel: Static security analysis tool detecting hardcoded secrets and code vulnerabilities with Python.\n- Web Utilities: Built responsive web applications using JavaScript, HTML5, and Tailwind CSS.\n\nSKILLS:\n- Programming: Python, C, JavaScript, SQL\n- Tools & Concepts: Git, GitHub, Linux, REST API, Data Structures, Algorithms, Unit Testing\n\nEDUCATION:\n- Bachelor of Technology in Computer Science`,
-        jd: `Junior Software Engineer\nRequirements:\n- Proficient in Python and JavaScript.\n- Hands-on experience with React, Node.js, and SQL (PostgreSQL or MySQL).\n- Familiar with Git, Docker containerization, and REST API development.\n- Solid understanding of Data Structures, Algorithms, and Agile development.`
+        resume: `Nikhil Teja Palakurthi\nEmail: codernik90@gmail.com | Phone: +91 9876543210\nGitHub: github.com/codernik27 | LinkedIn: linkedin.com/in/nikhilteja\n\nTECHNICAL SUMMARY:\nMotivated Software Engineer with strong command over object-oriented design, algorithms, and full-stack web applications.\n\nSKILLS:\n- Languages: Python, C, JavaScript, SQL, HTML, CSS\n- Tools & Platforms: Git, GitHub, Linux, VS Code\n- Core Competencies: Data Structures, Algorithms, REST API development, OOP\n\nPROJECTS:\n1. DevSentinel — Static Security & Secret Leak Scanner\n- Engineered a Python static code analysis engine to detect exposed credentials and cryptographic secrets.\n\n2. ResumeLens — ATS Diagnostic Engine\n- Created an interactive client-side NLP tool evaluating keyword density for job applicants.\n\nEDUCATION:\n- Bachelor of Technology in Computer Science (2022 - 2026)`,
+        jd: `Junior Software Engineer (Full-Stack)\nRequirements:\n- Proficient in Python and JavaScript.\n- Hands-on experience with React, Node.js, and SQL databases (PostgreSQL or MySQL).\n- Familiarity with Git, Docker containers, and REST API development.\n- Solid understanding of Data Structures, Algorithms, Unit Testing, and Agile workflows.\n- Exposure to Cloud platforms (AWS or GCP) is a plus.`
       },
       ai: {
-        resume: `AI & Python Developer\nEmail: candidate@test.com | GitHub: github.com/candidate\n\nSKILLS: Python, Pandas, NumPy, Scikit-learn, Git, SQL\nPROJECTS: Machine learning predictive models and data cleaning scripts.\nEDUCATION: Computer Science B.Tech`,
-        jd: `Machine Learning Engineer\nRequirements:\n- Python, PyTorch or TensorFlow, Deep Learning, NLP\n- Data pipelines with Pandas, NumPy, and SQL\n- Docker, FastAPI, and AWS deployment\n- Strong Data Structures and Algorithms background`
+        resume: `AI & Python Specialist\nEmail: candidate@mail.com | GitHub: github.com/candidate\n\nSKILLS: Python, Pandas, NumPy, Scikit-learn, Git, SQL, Linux\nPROJECTS: Supervised learning models, exploratory data analysis\nEDUCATION: B.Tech Computer Science`,
+        jd: `Machine Learning Engineer\nRequirements:\n- Strong Python, PyTorch or TensorFlow, Deep Learning\n- Data pipelines with Pandas, NumPy, and SQL\n- Docker, FastAPI, and AWS SageMaker\n- Data Structures, Algorithms, and Agile development`
       },
       web: {
-        resume: `Frontend Developer\nEmail: dev@web.com | LinkedIn: linkedin.com/in/dev\n\nSKILLS: HTML, CSS, JavaScript, Tailwind, React, Git\nEXPERIENCE: Built interactive responsive web apps.\nEDUCATION: Degree in Engineering`,
-        jd: `Frontend Engineer (React / TypeScript)\nRequirements:\n- React, Next.js, TypeScript, JavaScript\n- Tailwind CSS, HTML5, responsive UI\n- GraphQL or REST API integration, Git, Unit Testing`
+        resume: `Frontend Developer\nEmail: dev@web.com | LinkedIn: linkedin.com/in/dev\n\nSKILLS: HTML, CSS, JavaScript, Tailwind, React, Git, REST API\nEXPERIENCE: Built interactive single-page web applications\nEDUCATION: Degree in Computer Science`,
+        jd: `Frontend Engineer (React / TypeScript)\nRequirements:\n- React, Next.js, TypeScript, JavaScript\n- Tailwind CSS, HTML5, Responsive UI\n- GraphQL, REST APIs, Git, Unit Testing`
       }
     };
 
-    // DOM Elements
+    // DOM References
     const resumeEl = document.getElementById("resumeInput");
     const jdEl = document.getElementById("jdInput");
+    const resumeCounter = document.getElementById("resumeCounter");
+    const jdCounter = document.getElementById("jdCounter");
     const resultsDeck = document.getElementById("resultsDeck");
     const progressCircle = document.getElementById("progressCircle");
     const scoreText = document.getElementById("scoreText");
-    const statusBadge = document.getElementById("statusBadge");
-    const countMatched = document.getElementById("countMatched");
-    const countMissing = document.getElementById("countMissing");
-    const structScore = document.getElementById("structScore");
+    const matchVerdictPill = document.getElementById("matchVerdictPill");
+    const statusSubtext = document.getElementById("statusSubtext");
+    const metricMatched = document.getElementById("metricMatched");
+    const metricMissing = document.getElementById("metricMissing");
+    const metricStructure = document.getElementById("metricStructure");
     const missingChips = document.getElementById("missingChips");
     const matchedChips = document.getElementById("matchedChips");
-    const structList = document.getElementById("structList");
+    const categoryGrid = document.getElementById("categoryGrid");
+    const structGrid = document.getElementById("structGrid");
+    const coverageRate = document.getElementById("coverageRate");
 
-    let currentMissingList = [];
+    let currentFindings = { matched: [], missing: [], score: 0, structChecks: [] };
 
-    // Clean Event Listeners (No inline glitches)
+    // Real-Time Word Counting
+    function countWords(str) {
+      const words = str.trim().split(/\s+/).filter(Boolean);
+      return words.length;
+    }
+    resumeEl.addEventListener("input", () => {
+      resumeCounter.innerText = `${countWords(resumeEl.value)} words`;
+    });
+    jdEl.addEventListener("input", () => {
+      jdCounter.innerText = `${countWords(jdEl.value)} words`;
+    });
+
+    // Preset & Control Listeners
     document.getElementById("btnSwe").addEventListener("click", () => loadPreset('swe'));
     document.getElementById("btnAi").addEventListener("click", () => loadPreset('ai'));
     document.getElementById("btnWeb").addEventListener("click", () => loadPreset('web'));
-    document.getElementById("btnClearResume").addEventListener("click", () => { resumeEl.value = ""; });
-    document.getElementById("btnClearJd").addEventListener("click", () => { jdEl.value = ""; });
-    document.getElementById("btnAnalyze").addEventListener("click", runAnalysis);
+    document.getElementById("btnClearResume").addEventListener("click", () => { resumeEl.value = ""; resumeCounter.innerText = "0 words"; });
+    document.getElementById("btnClearJd").addEventListener("click", () => { jdEl.value = ""; jdCounter.innerText = "0 words"; });
+    document.getElementById("btnAnalyze").addEventListener("click", executeAudit);
 
+    // Keyboard Shortcut (Ctrl+Enter or Cmd+Enter)
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        executeAudit();
+      }
+    });
+
+    // Copy Missing Skills
     document.getElementById("btnCopyMissing").addEventListener("click", () => {
-      if (!currentMissingList.length) return;
-      navigator.clipboard.writeText(currentMissingList.join(", "));
+      if (!currentFindings.missing.length) return;
+      navigator.clipboard.writeText(currentFindings.missing.join(", "));
       const btn = document.getElementById("btnCopyMissing");
-      btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copied!`;
+      btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copied to Clipboard`;
       setTimeout(() => {
         btn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy List`;
       }, 2000);
     });
 
+    // Export Markdown Report
+    document.getElementById("btnExportReport").addEventListener("click", exportMarkdownReport);
+
     function loadPreset(key) {
       resumeEl.value = PRESETS[key].resume;
       jdEl.value = PRESETS[key].jd;
-      runAnalysis();
+      resumeCounter.innerText = `${countWords(resumeEl.value)} words`;
+      jdCounter.innerText = `${countWords(jdEl.value)} words`;
+      executeAudit();
     }
 
-    function runAnalysis() {
+    function executeAudit() {
       const resume = resumeEl.value.trim();
       const jd = jdEl.value.trim();
 
       if (!resume || !jd) {
-        alert("Please provide both your resume and the target job description!");
+        alert("Please provide both candidate resume and job requirements (or select a 1-click sample above)!");
         return;
       }
 
       const lowerResume = resume.toLowerCase();
       const lowerJd = jd.toLowerCase();
 
-      // Extract skills from JD
-      const targetSkills = SKILL_DB.filter(skill => lowerJd.includes(skill));
-
+      // Skill Extraction
+      const targetSkills = ALL_SKILLS.filter(skill => lowerJd.includes(skill));
       const matched = [];
       const missing = [];
 
@@ -307,74 +419,170 @@
         }
       });
 
-      currentMissingList = missing;
+      const totalTarget = targetSkills.length;
+      const score = totalTarget > 0 ? Math.round((matched.length / totalTarget) * 100) : 60;
 
-      // Calculate Match Score
-      const total = targetSkills.length;
-      const score = total > 0 ? Math.round((matched.length / total) * 100) : 50;
-
-      // Structural Checks (Email, Phone/Links, Experience, Skills/Education)
+      // Structural ATS Checks
       const structChecks = [
-        { label: "Email Address", pass: /[\w.-]+@[\w.-]+\.\w+/.test(resume) },
-        { label: "LinkedIn / GitHub Link", pass: /(github\.com|linkedin\.com)/i.test(resume) },
-        { label: "Experience / Projects Header", pass: /(experience|projects|work history)/i.test(resume) },
-        { label: "Skills / Education Header", pass: /(skills|education|technologies)/i.test(resume) }
+        { name: "Email Identifier", pass: /[\w.-]+@[\w.-]+\.\w+/.test(resume), detail: "Valid email format for recruiter contact" },
+        { name: "Professional Links", pass: /(github\.com|linkedin\.com)/i.test(resume), detail: "Direct portfolio / profile URLs" },
+        { name: "Experience Section", pass: /(experience|projects|work history)/i.test(resume), detail: "Recognized chronological work header" },
+        { name: "Education & Skills", pass: /(skills|education|technologies)/i.test(resume), detail: "Parsable skills & academic credentials" }
       ];
 
-      const passCount = structChecks.filter(c => c.pass).length;
+      currentFindings = { matched, missing, score, structChecks };
 
-      // Show Results
+      // Reveal Deck
       resultsDeck.classList.remove("hidden");
 
-      // Update counters
-      countMatched.innerText = matched.length;
-      countMissing.innerText = missing.length;
-      structScore.innerText = `${passCount}/4`;
-      scoreText.innerText = `${score}%`;
+      // Animate Numbers
+      animateNumber(scoreText, score, "%");
+      metricMatched.innerText = matched.length;
+      metricMissing.innerText = missing.length;
+      const passCount = structChecks.filter(c => c.pass).length;
+      metricStructure.innerText = `${passCount}/4`;
+      coverageRate.innerText = `${totalTarget > 0 ? Math.round((matched.length/totalTarget)*100) : 0}% Aligned`;
 
-      // Animate SVG Circle reliably
-      const circumference = 251.32; // 2 * PI * 40
+      // Animate Radial Gauge
+      const circumference = 263.89; // 2 * PI * 42
       const offset = circumference - (score / 100) * circumference;
-      
-      // Force repaint
       progressCircle.style.strokeDashoffset = circumference;
-      void progressCircle.offsetWidth; // Trigger reflow
+      void progressCircle.offsetWidth; // Force Reflow
       progressCircle.style.strokeDashoffset = offset;
 
-      // Color Coding
+      // Status Colors
       if (score >= 70) {
-        progressCircle.style.stroke = "#10b981"; // Emerald
-        statusBadge.innerText = "Strong Candidate Match";
-        statusBadge.className = "mt-3 text-xs font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+        progressCircle.style.stroke = "#10b981";
+        matchVerdictPill.innerText = "Strong Candidate Match";
+        matchVerdictPill.className = "text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold";
+        statusSubtext.innerText = "High ATS Clearance Probability";
       } else if (score >= 45) {
-        progressCircle.style.stroke = "#f59e0b"; // Amber
-        statusBadge.innerText = "Moderate (Keyword Gaps)";
-        statusBadge.className = "mt-3 text-xs font-medium px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20";
+        progressCircle.style.stroke = "#f59e0b";
+        matchVerdictPill.innerText = "Moderate Keyword Gap";
+        matchVerdictPill.className = "text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold";
+        statusSubtext.innerText = "Requires Keyword Optimization";
       } else {
-        progressCircle.style.stroke = "#ef4444"; // Rose
-        statusBadge.innerText = "High Rejection Risk";
-        statusBadge.className = "mt-3 text-xs font-medium px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20";
+        progressCircle.style.stroke = "#f43f5e";
+        matchVerdictPill.innerText = "High Rejection Risk";
+        matchVerdictPill.className = "text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 font-bold";
+        statusSubtext.innerText = "Crucial Required Skills Missing";
       }
 
       // Render Badges
       missingChips.innerHTML = missing.length 
-        ? missing.map(s => `<span class="px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-300 font-mono text-xs font-medium flex items-center gap-1.5"><i class="fa-solid fa-xmark text-[10px]"></i> ${s}</span>`).join("")
-        : `<span class="text-xs text-surface-muted font-mono">No keyword gaps found!</span>`;
+        ? missing.map(s => `<span class="px-2.5 py-1 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-300 font-mono text-xs font-semibold flex items-center gap-1.5"><i class="fa-solid fa-xmark text-[10px]"></i> ${s}</span>`).join("")
+        : `<span class="text-xs text-slate-500 font-mono">No target skill gaps identified!</span>`;
 
       matchedChips.innerHTML = matched.length 
-        ? matched.map(s => `<span class="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 font-mono text-xs font-medium flex items-center gap-1.5"><i class="fa-solid fa-check text-[10px]"></i> ${s}</span>`).join("")
-        : `<span class="text-xs text-surface-muted font-mono">No target tech found in resume.</span>`;
+        ? matched.map(s => `<span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 font-mono text-xs font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-[10px]"></i> ${s}</span>`).join("")
+        : `<span class="text-xs text-slate-500 font-mono">No overlapping target tech detected.</span>`;
 
-      // Render Structure Checks
-      structList.innerHTML = structChecks.map(c => `
-        <div class="flex items-center gap-2 p-2.5 rounded-md bg-surface-base border border-surface-border">
-          <i class="fa-solid ${c.pass ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
-          <span class="${c.pass ? 'text-slate-200' : 'text-surface-muted'}">${c.label}</span>
+      // Render Category Breakdown
+      renderCategories(matched, missing);
+
+      // Render Structural Checks
+      structGrid.innerHTML = structChecks.map(c => `
+        <div class="p-3 rounded-xl bg-obsidian-950/60 border border-obsidian-border flex items-start gap-2.5">
+          <i class="fa-solid ${c.pass ? 'fa-circle-check text-emerald-400' : 'fa-circle-xmark text-rose-400'} mt-0.5 text-sm"></i>
+          <div>
+            <div class="text-xs font-bold ${c.pass ? 'text-white' : 'text-slate-400'}">${c.name}</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">${c.detail}</div>
+          </div>
         </div>
       `).join("");
 
       // Smooth scroll
       resultsDeck.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderCategories(matched, missing) {
+      const categories = [
+        { title: "Languages", key: "languages", icon: "fa-code" },
+        { title: "Frameworks & Libs", key: "frameworks", icon: "fa-cubes" },
+        { title: "Cloud & DevOps", key: "cloud_devops", icon: "fa-cloud" },
+        { title: "Data & Architecture", key: "databases_data", icon: "fa-database" }
+      ];
+
+      categoryGrid.innerHTML = categories.map(cat => {
+        const pool = TAXONOMY[cat.key];
+        const catMatched = matched.filter(s => pool.includes(s));
+        const catMissing = missing.filter(s => pool.includes(s));
+        const total = catMatched.length + catMissing.length;
+
+        return `
+          <div class="p-4 rounded-xl bg-obsidian-950/60 border border-obsidian-border">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-300 mb-2">
+              <span class="flex items-center gap-1.5"><i class="fa-solid ${cat.icon} text-slate-500"></i> ${cat.title}</span>
+              <span class="font-mono text-emerald-400">${catMatched.length}/${total}</span>
+            </div>
+            <div class="w-full bg-obsidian-800 h-1.5 rounded-full overflow-hidden mb-3">
+              <div class="bg-emerald-400 h-full transition-all duration-500" style="width: ${total > 0 ? (catMatched.length/total)*100 : 0}%"></div>
+            </div>
+            <div class="text-[10px] text-slate-500 font-mono">
+              ${catMissing.length ? `<span class="text-rose-400 font-semibold">Missing:</span> ${catMissing.slice(0, 3).join(', ')}` : `<span class="text-emerald-400">All captured</span>`}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function animateNumber(element, target, suffix = "") {
+      let current = 0;
+      const duration = 1000;
+      const stepTime = 20;
+      const totalSteps = duration / stepTime;
+      const stepValue = target / totalSteps;
+
+      const timer = setInterval(() => {
+        current += stepValue;
+        if (current >= target) {
+          element.innerText = target + suffix;
+          clearInterval(timer);
+        } else {
+          element.innerText = Math.round(current) + suffix;
+        }
+      }, stepTime);
+    }
+
+    function exportMarkdownReport() {
+      const { matched, missing, score, structChecks } = currentFindings;
+      const reportContent = `# ResumeLens ATS Audit Report
+Generated: ${new Date().toLocaleString()}
+Author: Nikhil Teja Palakurthi (github.com/codernik27)
+
+---
+
+## 📊 Summary Scorecard
+- **Overall Match Index:** ${score}%
+- **Matched Skills Count:** ${matched.length}
+- **Missing Skills Count:** ${missing.length}
+- **Structural Integrity:** ${structChecks.filter(c => c.pass).length}/4 Checks Passed
+
+---
+
+## ⚠️ Critical Missing Keywords (Add to Resume)
+${missing.length ? missing.map(m => `- [ ] ${m}`).join("\n") : "None! All target skills were satisfied."}
+
+---
+
+## ✅ Verified Matching Competencies
+${matched.length ? matched.map(m => `- [x] ${m}`).join("\n") : "None."}
+
+---
+
+## 🛡️ Structural ATS Compliance
+${structChecks.map(c => `- ${c.pass ? "✅" : "❌"} **${c.name}:** ${c.detail}`).join("\n")}
+`;
+
+      const blob = new Blob([reportContent], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `ResumeLens_ATS_Audit_${Date.now()}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>
